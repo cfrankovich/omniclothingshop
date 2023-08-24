@@ -1,19 +1,39 @@
-The following are commands used to set up the development environment.
+# omniclothingshop
 
-First start the docker container by using
+## About
+blah blah blah
+
+## Development
+You will need the following technologies installed.
+- node (https://nodejs.org)
+- docker (https://www.docker.com)
+
+Begin by installing all node dependencies by doing the following.
+```
+$ npm install
+$ cd client && npm install
+```
+Start the docker container by using
+```
 $ docker-compose up
-
-To start the server run 
+```
+This will activate the container for the postgresql server.
+To run the web server simply run
+```
 $ npm start
-
-The frontend is started the same way
-$ cd client
-$ npm start
-
-To view the database tables do
+```
+in the repository's root directory.
+The client side is located in the `client/` directory. Run the react app by doing
+```
+$ cd client && npm start
+```
+To view the database tables, entries, and more in your browser do run
+```
 $ npx prisma studio
-
-To migrate/edit the database structure you will need to do the following
-$ npx prisma generate 
-$ npx prisma migrate save --name <anything>
+```
+This should automatically open a new tab in your browser (make sure that the docker container is running before you do this). After you make changes to the database structure through `prisma/schema.prisma` you will have to migrate the database by running the following commands. 
+```
+$ npx prisma generate
+$ npx prisma migrate save --name <migration name>
 $ npx prisma migrate up
+```
