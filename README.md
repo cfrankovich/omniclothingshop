@@ -13,7 +13,7 @@ Begin by installing all node dependencies by doing the following.
 $ npm install
 $ cd client && npm install
 ```
-Start the docker container by using
+Start the docker container in another terminal by using
 ```
 $ docker-compose up
 ```
