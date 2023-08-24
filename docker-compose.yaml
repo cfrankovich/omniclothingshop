@@ -1,0 +1,15 @@
+version: '3.6'
+services:
+  postgres:
+    image: postgres:13
+    ports:
+      - '5432:5432' 
+    restart: always
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: natten 
+      POSTGRES_PASSWORD: natten 
+
+volumes:
+  db-data:
