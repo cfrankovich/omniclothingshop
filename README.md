@@ -1,39 +1,27 @@
-# omniclothingshop
+# OMNICLOTHING.SHOP 
 
-## About
-blah blah blah
+## ABOUT 
+This repository hosts client and server code for the website [omniclothing.shop](https://omniclothing.shop). Omniclothingshop is an online garment market based in FL. 
 
-## Development
-You will need the following technologies installed.
-- node (https://nodejs.org)
-- docker (https://www.docker.com)
+## DEVELOPER INFO 
 
-Begin by installing all node dependencies by doing the following.
-```
-$ npm install
-$ cd client && npm install
-```
-Start the docker container in another terminal by using
-```
-$ docker-compose up
-```
-This will activate the container for the postgresql server.
-To run the web server simply run
-```
-$ npm start
-```
-in the repository's root directory.
-The client side is located in the `client/` directory. Run the react app by doing
-```
-$ cd client && npm start
-```
-To view the database tables, entries, and more in your browser do run
-```
-$ npx prisma studio
-```
-This should automatically open a new tab in your browser (make sure that the docker container is running before you do this). After you make changes to the database structure through `prisma/schema.prisma` you will have to migrate the database by running the following commands. 
-```
-$ npx prisma generate
-$ npx prisma migrate save --name <migration name>
-$ npx prisma migrate up
-```
+### DEPENDENCIES 
+Node and docker. Both can be found at nodejs.org and docker.com.
+
+Install the node dependencies by running `npm install` in the root (the repository) directory and the `client` directory. 
+
+### SETTING UP THE DATABASE 
+After you installed docker at docker.com, simply run `docker-compose up` to start the container (development purposes for now). To create the database, run `npx prisma db push`. 
+
+Prisma provides a frontend for us to view and interact with the database. Run `npx prisma studio` and open the link in the output.
+
+### MANIPULATING THE DATABASE 
+This project uses prisma as an ORM for postgresql. An ORM provides an abstraction layer between our database and code. To define models (tables), relationships, or anything "database structure related," edit `schema.prisma` located in the `prisma` directory. Visit prisma.io for more info. 
+
+After you have made changes you will have to migrate the data to the new version. Simply run `prisma migrate dev` and your changes will be "saved." 
+
+### RUNNING THE SERVER
+Run `npm start` in the root directory. This is basically just an alias for `nodemon --watch 'src/**/*.ts' --exec 'npx ts-node' src/index.ts`. 
+
+### RUNNING THE CLIENT 
+Same as server except in client directory. Navigate to the `client` directory and run `npm start` which will just run a react app.
