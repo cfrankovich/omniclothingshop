@@ -1,23 +1,19 @@
 import { gql } from 'apollo-server-express';
 
 const typeDefs = gql`
-  type User {
-    id: Int!
-    email: String!
-    username: String!
-    hashedPassword: String!
-    role: Role!
-  }
+    type Garment {
+        id: Int!
+        brand: String!
+        title: String!
+        price: String!
+        color: String!
+        size: String!
+        forSale: Boolean!
+    }
 
-  enum Role {
-    USER
-    ADMIN
-  }
-
-  type Query {
-    getUsers: [User]
-    getUserByEmail(email: String!): User
-  }
+    type Query {
+        allGarments: [Garment]
+    }
 `;
 
 export default typeDefs;

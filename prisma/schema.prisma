@@ -22,10 +22,11 @@ model Session {
 }
 
 model Garment {
-    id      String @id @unique 
+    id      Int     @id @default(autoincrement())
+    title   String  @default("untitled")
     brand   String
     price   Decimal 
     color   String 
     size    String
-    forsale Boolean
+    forSale Boolean
 }

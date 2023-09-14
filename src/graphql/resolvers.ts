@@ -4,12 +4,9 @@ const prisma = new PrismaClient();
 
 const resolvers = {
     Query: {
-        getUserByEmail: async (_:any, { email }: { email:string }) => {
-            const user = await prisma.user.findUnique({ 
-                where: { email }, 
-                select: { username:true, hashedPassword: true }
-            });
-            return user;
+        allGarments: async () => {
+            const garments = await prisma.garment.findMany();
+            return garments;
         }
     }
 };
