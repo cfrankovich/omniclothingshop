@@ -1,44 +1,77 @@
-import React from 'react'
+import React, { useState } from "react";
+import axios from "axios";
 
 function Signup() {
-    const handlesubmit = (e) => {
-        e.preventDefault();
+  const [formData, setFormData] = useState({
+    username: "",
+    email: "",
+    password: "",
+  });
 
-        const form = e.target;
-        const formData = new FormData(form);
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
 
-        console.log(formData);
-
-        fetch('http://localhost:8080/signup', {
-            method: 'POST',
-            mode: 'cors',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(formData)
-        }).catch((error) => {
-            console.error('Error:', error)
-        })
-    }
+  const signup = (e) => {
+    e.preventDefault(); // Prevent the default form submission behavior
+    axios
+      .post("/signup", formData)
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.log("API call failed", error);
+      });
+  };
 
   return (
     <>
-        signup
-        <form method="post" onSubmit={handlesubmit}>
-            <label>
-                Username: <input type="text" name="username" placeholder="username" />
-            </label>
-            <label>
-                Email: <input type="text" name="email" placeholder="email" />
-            </label>
-            <label>
-                Password: <input type="password" name="password" placeholder="password" />
-            </label>
-            <button type="reset">reset</button>
-            <button type="submit">submit</button>
-        </form>
+      <h1>SIGNUP</h1>
+      <form onSubmit={signup}>
+        <label>
+          Username:
+          <input
+            type="text"
+            name="username"
+            placeholder="username"
+            value={formData.username}
+            onChange={handleChange}
+          />
+        </label>
+        <label>
+          Email:
+          <input
+            type="text"
+            name="email"
+            placeholder="email"
+            value={formData.email}
+            onChange={handleChange}
+          />
+        </label>
+        <label>
+          Password:
+          <input
+            type="password"
+            name="password"
+            placeholder="password"
+            value={formData.password}
+            onChange={handleChange}
+          />
+        </label>
+        <button
+          type="reset"
+          onClick={() => setFormData({ username: "", email: "", password: "" })}
+        >
+          reset
+        </button>
+        <button type="submit">submit</button>
+      </form>
     </>
-  )
+  );
 }
 
-export default Signup
+export default Signup;

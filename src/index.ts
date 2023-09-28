@@ -67,6 +67,7 @@ app.post("/signup", async (req, res) => {
     email,
     password,
   }: { username: string; email: string; password: string } = req.body;
+
   const hashedPassword: string = await hash(password);
 
   try {
@@ -118,8 +119,8 @@ app.post("/test/savegarments", async (req, res) => {
         where: { id: parseInt(item.id, 10) },
       });
 
+      const { brand, title, price, color, size, forSale } = item;
       if (garment) {
-        const { brand, title, price, color, size, forSale } = item;
         const updatedGarment = await prisma.garment.update({
           where: { id: item.id },
           data: {
@@ -132,7 +133,6 @@ app.post("/test/savegarments", async (req, res) => {
           },
         });
       } else {
-        const { brand, title, price, color, size, forSale } = item;
         try {
           const newGarment = await prisma.garment.create({
             data: {
@@ -157,10 +157,10 @@ app.post("/test/savegarments", async (req, res) => {
   });
 });
 
-app.post("/test/deletegarments", async (req, res) => {
+app.post("/test/deleteusers", async (req, res) => {
   const ids = req.body.ids;
   try {
-    const deleteResponse = await prisma.garment.deleteMany({
+    const deleteResponse = await prisma.user.deleteMany({
       where: {
         id: {
           in: ids,
@@ -171,4 +171,28 @@ app.post("/test/deletegarments", async (req, res) => {
   } catch (err) {
     res.status(500).send(err);
   }
+});
+
+app.post("/test/saveusers", async (req, res) => {
+  req.body.users.forEach(async (item: any) => {
+    try {
+      const user = await prisma.user.findUnique({
+        where: { id: parseInt(item.id, 10) },
+      });
+
+      const { username, email } = item;
+      if (user) {
+        const updatedGarment = await prisma.user.update({
+          where: { id: item.id },
+          data: {
+            username,
+            email,
+          },
+        });
+      }
+    } catch (error) {
+      console.error("Error querying garment:", error);
+      res.status(500).json({ error: "Failed to query garment" });
+    }
+  });
 });
