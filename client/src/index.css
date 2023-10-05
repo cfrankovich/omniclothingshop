@@ -1,24 +1,8 @@
-* {
-  margin: 0;
-  padding: 0;
-  background-color: #000;
-  color: #fff;
-}
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
 
-table,
-th,
-td {
-  border: 1px solid #fff;
-}
-
-td {
-  background: transparent;
-}
-
-.editedtr {
-  background-color: #00ff00;
-}
-
-input:disabled {
-  cursor: not-allowed;
+.bg-image {
+  background: url('./assets/meow.jpg') no-repeat center center fixed;
+  background-size: cover;
 }
