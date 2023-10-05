@@ -3,9 +3,6 @@ import { useQuery } from "@apollo/client";
 import gql from "graphql-tag";
 import Listing from "./Listing";
 
-// query all listings (garments that have forsale = true)
-// display them using the listing component
-
 const GET_ALL_GARMENTS = gql`
   query GetAllGarments {
     allGarments {
@@ -33,11 +30,15 @@ function Collection() {
   return (
     <>
       <h1>COLLECTION</h1>
-      {garments
-        .filter((garment) => garment.forSale)
-        .map((garment) => (
-          <Listing title={garment.title} price={garment.price} />
-        ))}
+      <div style={{ display: "flex", flexWrap: "wrap" }}>
+        {garments
+          .filter((garment) => garment.forSale)
+          .map((garment) => (
+            <a href={`/collection/${garment.id}`}>
+              <Listing title={garment.title} price={garment.price} />
+            </a>
+          ))}
+      </div>
     </>
   );
 }
