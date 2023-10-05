@@ -1,43 +1,35 @@
-import React from 'react'
-import About from './components/About';
+import React from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import Navbar from './components/Navbar';
 import Home from './components/Home';
 import Collection from './components/Collection';
 import Lookbook from './components/Lookbook';
-import Navbar from './components/Navbar';
+import About from './components/About';
 import Appointment from './components/Appointment';
 import Signup from './components/Signup';
 import Test from './components/Test';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import OrbPage from './components/OrbPage';
 
 function App() {
-    return (
-        <Router>
-            <Navbar />
-            <Switch>
-                <Route path="/about">
-                    <About />
-                </Route>
-                <Route path="/collection">
-                    <Collection />
-                </Route>
-                <Route path="/lookbook">
-                    <Lookbook />
-                </Route>
-                <Route path="/book-appointment">
-                    <Appointment />
-                </Route>
-                <Route path="/signup">
-                    <Signup />
-                </Route>
-                <Route path="/test">
-                    <Test />
-                </Route>
-                <Route path="/">
-                    <Home />
-                </Route>
-            </Switch>    
-        </Router>
-    )
+  return (
+    <Router>
+      <div className="bg-black text-white min-h-screen font-sans bg-image">
+        <Navbar />
+        <main className="container mx-auto p-4 max-w-screen-xl">
+          <Switch>
+            <Route path="/about" component={About} />
+            <Route path="/collection" component={Collection} />
+            <Route path="/lookbook" component={Lookbook} />
+            <Route path="/book-appointment" component={Appointment} />
+            <Route path="/signup" component={Signup} />
+            <Route path="/test" component={Test} />
+            <Route path="/orb" component={OrbPage} />
+            <Route exact path="/" component={Home} />
+          </Switch>
+        </main>
+      </div>
+    </Router>
+  );
 }
 
-export default App
+export default App;
