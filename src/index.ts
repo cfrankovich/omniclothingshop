@@ -9,6 +9,7 @@ import { hash, verify } from "argon2";
 import session from "express-session";
 import dotenv from "dotenv";
 import path from "path";
+import pg from "pg";
 
 dotenv.config();
 
@@ -17,17 +18,32 @@ const port = process.env.PORT || 8080;
 const prisma = new PrismaClient();
 const pgSession = require("connect-pg-simple")(session);
 
+const pgPool = new pg.Pool({
+  connectionString: process.env.DATABASE_URL,
+});
+
+declare module "express-session" {
+  interface SessionData {
+    username: string;
+  }
+}
+
 app.use(bodyParser.json());
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+  })
+);
 app.use(
   session({
     store: new pgSession({
-      prisma,
+      pool: pgPool,
       tableName: "Session",
     }),
     secret: "secret-key",
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
   })
 );
 
@@ -78,12 +94,34 @@ app.post("/signup", async (req, res) => {
         hashedPassword,
       },
     });
-    res.json(newUser);
-    console.log("Created new user.");
+    req.session.username = username;
+    req.session.save((err) => {
+      return res.json({
+        loggedIn: true,
+        username: username,
+      });
+    });
   } catch (error) {
     console.error("Error creating user:", error);
     res.status(500).json({ error: "Failed to create user." });
   }
+});
+
+app.get("/api/current-user", async (req, res) => {
+  if (req.session.username) {
+    return res.json({
+      loggedIn: true,
+      username: req.session.username,
+    });
+  } else {
+    return res.json({
+      loggedIn: false,
+    });
+  }
+});
+
+app.post("/logout", (req, res) => {
+  req.session.destroy((err) => {});
 });
 
 app.post("/login", async (req, res) => {
@@ -91,7 +129,7 @@ app.post("/login", async (req, res) => {
     const { email, password } = req.body;
     const user = await prisma.user.findUnique({
       where: { email },
-      select: { email: true, hashedPassword: true },
+      select: { username: true, email: true, hashedPassword: true },
     });
 
     if (user === null) {
@@ -99,9 +137,18 @@ app.post("/login", async (req, res) => {
     } else {
       const isPasswordCorrect = await verify(user.hashedPassword, password);
       if (isPasswordCorrect) {
-        console.log("Password correct!");
+        req.session.username = user.username;
+        req.session.save((err) => {
+          return res.json({
+            loggedIn: true,
+            username: user.username,
+          });
+        });
       } else {
         console.log("Incorrect password.");
+        res.json({
+          loggedIn: false,
+        });
       }
     }
   } catch (error) {
@@ -195,4 +242,46 @@ app.post("/test/saveusers", async (req, res) => {
       res.status(500).json({ error: "Failed to query garment" });
     }
   });
+});
+
+app.post("/api/update-user", async (req, res) => {
+  const newUser = req.body.newUser;
+
+  try {
+    const user = await prisma.user.findUnique({
+      where: { username: req.session.username },
+    });
+
+    if (user) {
+      const { username } = newUser;
+
+      const updatedUser = await prisma.user.update({
+        where: { id: user.id },
+        data: {
+          username,
+        },
+      });
+      req.session.username = username;
+      req.session.save((err) => {
+        return res.json({
+          loggedIn: true,
+          username: username,
+        });
+      });
+    }
+  } catch (error) {
+    console.error("Error updating user.", error);
+    res.status(500).json({ error: "Failed to update user. " });
+  }
+});
+
+app.post("/api/delete-account", async (req, res) => {
+  try {
+    const deleteUser = await prisma.user.delete({
+      where: { username: req.session.username },
+    });
+    res.status(200).send(deleteUser);
+  } catch (error) {
+    res.status(500);
+  }
 });
