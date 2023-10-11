@@ -12,6 +12,7 @@ import { Router, Route } from "react-router-dom";
 import Login from "./components/Login";
 import Logout from "./components/Logout";
 import { createBrowserHistory } from "history";
+import GarmentPage from "./components/GarmentPage";
 
 const history = createBrowserHistory();
 
@@ -28,6 +29,9 @@ function App() {
       </Route>
       <Route exact path="/collection">
         <Collection />
+      </Route>
+      <Route path="/collection/:garmentId">
+        <GarmentPage />
       </Route>
       <Route exact path="/lookbook">
         <Lookbook />

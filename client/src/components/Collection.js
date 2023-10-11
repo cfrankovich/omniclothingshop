@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useQuery } from "@apollo/client";
 import gql from "graphql-tag";
 import Listing from "./Listing";
+import { Link } from "react-router-dom";
 
 const GET_ALL_GARMENTS = gql`
   query GetAllGarments {
@@ -34,9 +35,9 @@ function Collection() {
         {garments
           .filter((garment) => garment.forSale)
           .map((garment) => (
-            <a href={`/collection/${garment.id}`}>
+            <Link to={`/collection/${garment.id}`}>
               <Listing title={garment.title} price={garment.price} />
-            </a>
+            </Link>
           ))}
       </div>
     </>
