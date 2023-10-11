@@ -119,7 +119,7 @@ function Garments() {
     );
 
     axios
-      .post("/test/deletegarments", { ids: selected })
+      .post("/api/delete-garments", { ids: selected })
       .then((response) => {
         console.log("Successfully deleted", response);
         setGarments(updatedGarments);
@@ -162,7 +162,7 @@ function Garments() {
       garments.find((garment) => garment.id === id)
     );
     axios
-      .post("/test/savegarments", { garments: editedGarments })
+      .post("/api/save-garments", { garments: editedGarments })
       .then((response) => {
         console.log(response.data);
       })

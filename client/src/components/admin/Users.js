@@ -84,7 +84,7 @@ function Users() {
     const updatedUsers = users.filter((user) => !selected.includes(user.id));
 
     axios
-      .post("/test/deleteusers", { ids: selected })
+      .post("/api/delete-users", { ids: selected })
       .then((response) => {
         console.log("Successfully deleted", response);
         setUsers(updatedUsers);
@@ -127,7 +127,7 @@ function Users() {
       users.find((user) => user.id === id)
     );
     axios
-      .post("/test/saveusers", { users: editedUsers })
+      .post("/api/save-users", { users: editedUsers })
       .then((response) => {
         console.log(response.data);
       })

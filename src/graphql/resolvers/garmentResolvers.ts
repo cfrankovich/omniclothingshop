@@ -6,15 +6,11 @@ interface GarmentByIdArgs {
   id: number;
 }
 
-const resolvers = {
+export const garmentResolvers = {
   Query: {
     allGarments: async () => {
       const garments = await prisma.garment.findMany();
       return garments;
-    },
-    allUsers: async () => {
-      const users = await prisma.user.findMany();
-      return users;
     },
     garmentById: async (_: unknown, { id }: GarmentByIdArgs) => {
       const garment = await prisma.garment.findUnique({
@@ -26,5 +22,3 @@ const resolvers = {
     },
   },
 };
-
-export default resolvers;

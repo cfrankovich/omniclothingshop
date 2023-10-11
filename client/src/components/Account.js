@@ -39,7 +39,7 @@ function Account() {
         console.error(error);
       });
     axios
-      .post("/logout")
+      .post("/auth/logout")
       .then((response) => {
         console.log(response);
         history.push("/login");

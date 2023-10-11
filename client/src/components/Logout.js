@@ -5,7 +5,7 @@ function Logout() {
   useEffect(() => {
     axios
       .post(
-        "/logout",
+        "/auth/logout",
         {},
         {
           withCredentials: true,

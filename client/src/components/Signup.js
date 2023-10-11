@@ -22,7 +22,7 @@ function Signup() {
   const signup = (e) => {
     e.preventDefault(); // Prevent the default form submission behavior
     axios
-      .post("/signup", formData)
+      .post("/auth/signup", formData)
       .then((response) => {
         console.log(response.data);
         setFormData({

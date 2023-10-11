@@ -24,7 +24,7 @@ function Login() {
     });
 
     axios
-      .post("/login", formData)
+      .post("/auth/login", formData)
       .then((response) => {
         if (response.data.loggedIn) {
           history.push("/account");
