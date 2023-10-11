@@ -2,14 +2,11 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 
-function Signup() {
+function Login() {
   const [formData, setFormData] = useState({
-    username: "",
     email: "",
     password: "",
   });
-
-  const history = useHistory();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -19,38 +16,33 @@ function Signup() {
     });
   };
 
-  const signup = (e) => {
-    e.preventDefault(); // Prevent the default form submission behavior
+  const login = (e) => {
+    e.preventDefault();
+    setFormData({
+      email: "",
+      password: "",
+    });
+
     axios
-      .post("/signup", formData)
+      .post("/login", formData)
       .then((response) => {
-        console.log(response.data);
-        setFormData({
-          username: "",
-          email: "",
-          password: "",
-        });
-        history.push("/account");
+        if (response.data.loggedIn) {
+          history.push("/account");
+        } else {
+          // TODO: tell user it was incorrect login info
+        }
       })
       .catch((error) => {
         console.log("API call failed", error);
       });
   };
 
+  let history = useHistory();
+
   return (
     <>
-      <h1>SIGNUP</h1>
-      <form onSubmit={signup}>
-        <label>
-          Username:
-          <input
-            type="text"
-            name="username"
-            placeholder="username"
-            value={formData.username}
-            onChange={handleChange}
-          />
-        </label>
+      <h1>LOGIN</h1>
+      <form onSubmit={login}>
         <label>
           Email:
           <input
@@ -73,7 +65,7 @@ function Signup() {
         </label>
         <button
           type="reset"
-          onClick={() => setFormData({ username: "", email: "", password: "" })}
+          onClick={() => setFormData({ email: "", password: "" })}
         >
           reset
         </button>
@@ -83,4 +75,4 @@ function Signup() {
   );
 }
 
-export default Signup;
+export default Login;

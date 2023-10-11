@@ -14,13 +14,6 @@ model User {
     hashedPassword  String  
 }
 
-// https://en.wikipedia.org/wiki/Web_storage for the login sessions 
-model Session {
-    id              String  @id @map("sid")
-    expire          DateTime
-    sess            Json
-}
-
 model Garment {
     id      Int     @id @default(autoincrement())
     title   String  @default("untitled")
