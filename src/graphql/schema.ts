@@ -21,6 +21,7 @@ const typeDefs = gql`
   type Query {
     allGarments: [Garment]
     allUsers: [User]
+    garmentById(id: Int!): Garment
   }
 `;
 
