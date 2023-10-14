@@ -18,6 +18,7 @@ import deleteUsersRoute from "./routes/api/deleteusers";
 import saveUsersRoute from "./routes/api/saveuser";
 import updateUserRoute from "./routes/api/updateuser";
 import deleteAccountRoute from "./routes/api/deleteaccount";
+import addToCartRoute from "./routes/api/addtocart";
 
 const app = express();
 const port = process.env.PORT || 8080;
@@ -26,6 +27,7 @@ export const prisma = new PrismaClient();
 declare module "express-session" {
   interface SessionData {
     username: string;
+    cartInitialized: boolean;
   }
 }
 
@@ -73,3 +75,33 @@ app.use("/api", deleteUsersRoute);
 app.use("/api", saveUsersRoute);
 app.use("/api", updateUserRoute);
 app.use("/api", deleteAccountRoute);
+app.use("/api", addToCartRoute);
+
+const cron = require("node-cron");
+cron.schedule("0 0 * * *", async () => {
+  const expiryThreshold = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+
+  const expiredCarts = await prisma.cart.findMany({
+    where: {
+      updatedAt: {
+        lt: expiryThreshold,
+      },
+    },
+  });
+
+  for (const cart of expiredCarts) {
+    await prisma.cartItem.deleteMany({
+      where: {
+        cartId: cart.sessionId,
+      },
+    });
+  }
+
+  await prisma.cart.deleteMany({
+    where: {
+      updatedAt: {
+        lt: expiryThreshold,
+      },
+    },
+  });
+});

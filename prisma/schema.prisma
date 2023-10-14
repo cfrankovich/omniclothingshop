@@ -15,11 +15,34 @@ model User {
 }
 
 model Garment {
-    id      Int     @id @default(autoincrement())
-    title   String  @default("untitled")
-    brand   String
-    price   Decimal 
-    color   String 
-    size    String
-    forSale Boolean
+    id          Int     @id @default(autoincrement())
+    title       String  @default("untitled")
+    brand       String
+    price       Decimal 
+    color       String 
+    size        String
+    forSale     Boolean
+    cartItems   CartItem[]
+}
+
+model Cart {
+    sessionId   String      @id @unique 
+    createdAt   DateTime    @default(now())
+    updatedAt   DateTime    @updatedAt
+    items       CartItem[]
+}
+
+model CartItem {
+    cartItemId  Int     @id @default(autoincrement())
+    cartId      String  
+    cart        Cart    @relation(fields: [cartId], references: [sessionId])
+    garmentId   Int     
+    garment     Garment @relation(fields: [garmentId], references: [id])
+    quantity    Int
+}
+
+model Session {
+  id        String      @id @map("sid")
+  expire    DateTime 
+  sess      Json     
 }

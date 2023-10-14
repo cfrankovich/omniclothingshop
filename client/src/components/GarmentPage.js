@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import gql from "graphql-tag";
 import { useQuery } from "@apollo/client";
+import axios from "axios";
 
 const GET_GARMENT_BY_ID = gql`
   query GetGarmentById($id: Int!) {
@@ -20,9 +21,22 @@ const GET_GARMENT_BY_ID = gql`
 function GarmentPage() {
   const { garmentId } = useParams();
   const [garment, setGarment] = useState();
-  const { loading, error, data } = useQuery(GET_GARMENT_BY_ID, {
+  const { loading, data } = useQuery(GET_GARMENT_BY_ID, {
     variables: { id: parseInt(garmentId) },
   });
+
+  const addToCart = () => {
+    axios
+      .post("/api/add-to-cart", garment, {
+        withCredentials: true,
+      })
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
 
   useEffect(() => {
     if (!loading && data) {
@@ -45,6 +59,7 @@ function GarmentPage() {
       <p>Price: {garment.price}</p>
       <p>Color: {garment.color}</p>
       <p>Sizing: {garment.size}</p>
+      <button onClick={addToCart}>add to cart</button>
     </>
   );
 }
