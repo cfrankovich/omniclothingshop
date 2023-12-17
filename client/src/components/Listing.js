@@ -15,11 +15,13 @@ const styles = {
   price: {
     textAlign: "right",
   },
+  newtag: {},
 };
 
 function Listing(props) {
   return (
     <div style={styles.container}>
+      {props.isNewForUser && <span style={styles.newtag}>new!</span>}
       <img
         src="/garment-test-image.png"
         alt="Garment Test"

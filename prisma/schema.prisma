@@ -8,21 +8,23 @@ datasource db {
 }
 
 model User {
-    id              Int     @id @default(autoincrement())
-    email           String  @unique
-    username        String  @unique
+    id              Int         @id @default(autoincrement())
+    email           String      @unique
+    username        String      @unique
     hashedPassword  String  
+    lastLoggedIn    DateTime    @default(now()) 
 }
 
 model Garment {
-    id          Int     @id @default(autoincrement())
-    title       String  @default("untitled")
+    id          Int         @id @default(autoincrement())
+    title       String      @default("untitled")
     brand       String
     price       Decimal 
     color       String 
     size        String
     forSale     Boolean
     cartItems   CartItem[]
+    createdAt   DateTime    @default(now())
 }
 
 model Cart {

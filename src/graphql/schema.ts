@@ -1,6 +1,8 @@
 import { gql } from "apollo-server-express";
 
 const typeDefs = gql`
+  scalar DateTime
+
   type Garment {
     id: Int!
     brand: String!
@@ -9,6 +11,7 @@ const typeDefs = gql`
     color: String!
     size: String!
     forSale: Boolean!
+    createdAt: DateTime!
   }
 
   type User {
@@ -16,6 +19,7 @@ const typeDefs = gql`
     email: String!
     username: String!
     hashedPassword: String!
+    lastLoggedIn: DateTime!
   }
 
   type Query {

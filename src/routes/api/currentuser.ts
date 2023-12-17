@@ -7,6 +7,7 @@ router.get("/current-user", async (req, res) => {
     return res.json({
       loggedIn: true,
       username: req.session.username,
+      lastLoggedIn: req.session.lastLogin,
     });
   } else {
     return res.json({

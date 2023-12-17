@@ -9,7 +9,12 @@ router.post("/login", async (req, res) => {
     const { email, password } = req.body;
     const user = await prisma.user.findUnique({
       where: { email },
-      select: { username: true, email: true, hashedPassword: true },
+      select: {
+        username: true,
+        email: true,
+        hashedPassword: true,
+        lastLoggedIn: true,
+      },
     });
 
     if (user === null) {
@@ -18,6 +23,7 @@ router.post("/login", async (req, res) => {
       const isPasswordCorrect = await verify(user.hashedPassword, password);
       if (isPasswordCorrect) {
         req.session.username = user.username;
+        req.session.lastLogin = user.lastLoggedIn;
         req.session.save((err) => {
           if (err) {
             console.error(err);
