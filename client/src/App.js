@@ -13,6 +13,7 @@ import Login from "./components/Login";
 import Logout from "./components/Logout";
 import { createBrowserHistory } from "history";
 import GarmentPage from "./components/GarmentPage";
+import Checkout from "./components/Checkout";
 
 const history = createBrowserHistory();
 
@@ -47,6 +48,9 @@ function App() {
       </Route>
       <Route exact path="/test">
         <Test />
+      </Route>
+      <Route exact path="/checkout">
+        <Checkout />
       </Route>
       <Route exact path="/">
         <Home />

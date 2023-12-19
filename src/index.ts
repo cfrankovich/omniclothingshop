@@ -19,6 +19,7 @@ import saveUsersRoute from "./routes/api/saveuser";
 import updateUserRoute from "./routes/api/updateuser";
 import deleteAccountRoute from "./routes/api/deleteaccount";
 import addToCartRoute from "./routes/api/addtocart";
+import checkoutRoute from "./routes/api/checkout";
 
 const app = express();
 const port = process.env.PORT || 8080;
@@ -77,6 +78,7 @@ app.use("/api", saveUsersRoute);
 app.use("/api", updateUserRoute);
 app.use("/api", deleteAccountRoute);
 app.use("/api", addToCartRoute);
+app.use("/api", checkoutRoute);
 
 const cron = require("node-cron");
 cron.schedule("0 0 * * *", async () => {

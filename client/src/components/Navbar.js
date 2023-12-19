@@ -13,6 +13,7 @@ function Navbar() {
       <Link to="/logout">logout </Link>
       <Link to="/account">account </Link>
       <Link to="/test">test </Link>
+      <Link to="/checkout">checkout </Link>
     </nav>
   );
 }
