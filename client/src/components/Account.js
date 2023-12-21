@@ -38,15 +38,7 @@ function Account() {
       .catch((error) => {
         console.error(error);
       });
-    axios
-      .post("/auth/logout")
-      .then((response) => {
-        console.log(response);
-        history.push("/login");
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+    history.push("/login");
   };
 
   useEffect(() => {

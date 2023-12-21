@@ -8,10 +8,24 @@ router.post("/delete-account", async (req, res) => {
     const deleteUser = await prisma.user.delete({
       where: { username: req.session.username },
     });
-    res.status(200).send(deleteUser);
   } catch (error) {
-    res.status(500);
+    res.status(500).send(error);
   }
+
+  try {
+    const cartItems = await prisma.cartItem.deleteMany({
+      where: { cartId: req.session.id },
+    });
+    const cart = await prisma.cart.delete({
+      where: { sessionId: req.session.id },
+    });
+  } catch (error) {
+    console.error("Error removing cart.", error);
+    res.status(500).send(error);
+  }
+
+  req.session.destroy((err) => {});
+  res.status(200);
 });
 
 export default router;
